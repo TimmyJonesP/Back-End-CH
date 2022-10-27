@@ -21,7 +21,7 @@ class User {
         const speller = this.libros.map((a) => a.nombre);
         console.log(speller);
     }
-}
+};
 
 const yo = new User(
     `Sandro`, "Carioli",
@@ -40,9 +40,10 @@ const yo = new User(
         nombre: "El Retorno del Rey",
         autor: "J.R.R Tolkien"
     }]
-)
+);
+
 yo.getFullName();
 yo.addMascotas("Perico");
 yo.countMascotas();
-yo.addBook({nombre: "El Hobbit", autor: "J.R.R Tolkien"});
+yo.addBook({ nombre: "El Hobbit", autor: "J.R.R Tolkien" });
 yo.getBooks();
