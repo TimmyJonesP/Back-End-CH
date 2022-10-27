@@ -19,7 +19,7 @@ class User {
     }
     getBooks() {
         const speller = this.libros.map((a) => a.nombre);
-        return console.log(speller);
+        console.log(speller);
     }
 }
 
