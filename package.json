@@ -1,0 +1,24 @@
+{
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "name": "back-end-ch",
+  "description": "Repositorio del curso de CoderHouse de Backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TimmyJonesP/Back-End-CH.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TimmyJonesP/Back-End-CH/issues"
+  },
+  "homepage": "https://github.com/TimmyJonesP/Back-End-CH#readme"
+}
