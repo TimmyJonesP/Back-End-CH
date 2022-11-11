@@ -25,26 +25,25 @@ class Contenedor {
         const newBook = { ...book, id: newId }
         data.push(newBook)
 
-            try {
-                await fs.writeFile(this.fileName, JSON.stringify(data, null))
-                return newId
-            }catch(err){
-                throw new Error(err)
-            }
+        try {
+            await fs.writeFile(this.fileName, JSON.stringify(data, null))
+            return newId
+        } catch (err) {
+            throw new Error(err)
+        }
     }
 
     async getById(id) {
-            const data = await this.getAll()
-            const seeker = await (data.find(p => p.id == id))
-            return seeker
+        const data = await this.getAll()
+        const seeker = data.find(p => p.id == id) || null
+        return seeker
     }
 
-    
     async deleteById(id) {
         const data = await this.getAll()
         ///Limpia la coincidencia
         const i = data.filter(p => p.id !== id)
-        
+
         try {
             ///la escribe en el archivo como es el nuevo array.-
             await fs.writeFile(this.fileName, JSON.stringify(i, null, 2));
@@ -53,7 +52,7 @@ class Contenedor {
         catch (error) {
             throw new Error(`${error}`)
         }
-        
+
     }
 
     async deleteAll() {
@@ -72,20 +71,18 @@ let libro3 = { title: "El señor de los anillos: El retorno del rey", price: 250
 const books = new Contenedor("./productos.txt");
 
 ///test run
+async function ById(){
+    let bookById =await books.getById(1)
+    console.log(bookById)
+}
 
 async function action() {
-    let porId = await books.getById(3)
-
-
     books.getAll()
-    .then(() => books.save(libro1))
-    .then(() => books.save(libro2))
-    .then(() => books.save(libro3))
-    .then(() => books.deleteById(2))
-    .then(() => {
-        console.log(porId)
-    })
-    
-} 
-///exe
-action();
+        .then(() => books.save(libro1))
+        .then(() => books.save(libro2))
+        .then(() => books.save(libro3))
+        .then(() => books.deleteById(2))
+        .then(ById)
+}
+
+module.exports = Contenedor;
