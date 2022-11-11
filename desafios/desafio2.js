@@ -1,109 +1,63 @@
-const fs = require("fs");
+const { promises: fs } = require("fs");
 
 class Contenedor {
-    productArray = new Array();
-    typeId;
-
 
     constructor(fileName) {
         this.fileName = fileName;
-
-        if (fs.existsSync(fileName)) {
-            ///si existe el .txt, lo trae. Segun el largo del array, asigna nuevo ID al objeto con el "#", y aclara que se existe el archiv.
-            this.productArray = JSON.parse(fs.readFileSync(this.fileName, "utf-8"));
-            this.typeId = this.#detId();
-            console.log("Archivo Existente");
-        } else {
-            ///asigna a 0 el primer ID y crea el nuevo archivo con el nombre asignado en el "new Contenedor("")"
-            this.typeId = 0;
-            fs.writeFileSync(this.fileName, JSON.stringify(this.productArray));
-            console.log("Archivo no encontrado... se creará.");
-        }
-    };
-
-    ///asignador de ID 
-    #detId() {
-        if (this.productArray.length > 0) {
-            let riseId = this.productArray.reduce((acc, item) => {
-                return Math.max(acc, item.id)
-            }, 0)
-            return riseId + 1;
-        } else {
-            return 0;
-        }
-    };
-
-    async save(Object) {
-        try {
-            if (!this.#thisIs(Object)) {
-                Object["id"] = this.typeId + 1;
-                this.typeId++;
-                this.productArray.push(Object);
-                ///escribe en el archivo el objeto con ID asignado.
-                await fs.promises.writeFile(this.fileName, JSON.stringify(this.productArray));
-                console.log(`Se guardó el libro n° ${Object.id}`);
-                return Promise.resolve(Object.id);
-            }
-            else {
-                console.log("Se han guardado los cambios");
-            }
-        }
-        catch (error) {
-            console.log(error);
-        }
-    }
-
-    #thisIs(a) {
-        let resp = false;
-        this.productArray.filter(e => {
-            if (e.title == a.title && e.price == a.price && e.img == a.img) {
-                resp = true;
-            }
-        });
-        return resp;
-    }
-
-    getById(id) {
-        ///retorna el encontrado por id ý sino un "null"
-        return this.productArray.find(p => p.id == id) || null
     }
 
     async getAll() {
         try {
-            ///lectura, asignación y vista de todos los objetos dentro del file.
-            const data = await fs.promises.readFile(this.fileName, "utf-8");
-            this.productArray = JSON.parse(data);
-            console.log(this.productArray)
-        }catch (err) {
-            console.log(err);
+            ///lectura, y vista de todos los objetos dentro del file.
+            const data = await fs.readFile(this.fileName, "utf-8");
+            return JSON.parse(data)
+        } catch (err) {
+            return []
         }
     }
 
+    async save(book) {
+        const data = await this.getAll()
+
+        let newId
+        data.length == 0 ? newId = 1 : (newId = data[data.length - 1].id + 1)
+
+        const newBook = { ...book, id: newId }
+        data.push(newBook)
+
+            try {
+                await fs.writeFile(this.fileName, JSON.stringify(data, null))
+                return newId
+            }catch(err){
+                throw new Error(err)
+            }
+    }
+
+    async getById(id) {
+            const data = await this.getAll()
+            const seeker = (data.find(p => p.id == id))
+            return seeker
+    }
+
+
     async deleteById(id) {
+        const data = await this.getAll()
         ///Limpia la coincidencia
-        this.productArray = this.productArray.filter(p => p.id !== id)
+        const i = data.filter(p => p.id !== id)
 
         try {
             ///la escribe en el archivo como es el nuevo array.-
-            await fs.promises.writeFile(this.fileName, JSON.stringify(this.productArray));
+            await fs.writeFile(this.fileName, JSON.stringify(i, null, 2));
             return { id }
         }
         catch (error) {
-            console.log(error);
+            throw new Error(`${error}`)
         }
 
     }
 
     async deleteAll() {
-        ///envía un array vacío y luego lo escribe en la ruta correspondiente.
-        this.productArray = [];
-        try {
-            await fs.promises.writeFile(this.fileName, JSON.stringify(this.productArray))  //escribe en un archivo
-            console.log("Todo borrado");
-        }
-        catch (error) {
-            console.log(error);
-        }
+        await fs.writeFile(this.fileName, JSON.stringify([], null, 2))
     }
 }
 
@@ -125,9 +79,8 @@ action = () => {
         .then(() => books.save(libro1))
         .then(() => books.save(libro2))
         .then(() => books.save(libro3))
-        .then(() => {
-            console.log(books.getById(1));
-        })
+        .then(() => books.deleteById(2))
+        .then(() => console.log(books.getById(1)))
 }
 ///exe
 action();
