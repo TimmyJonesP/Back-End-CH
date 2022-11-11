@@ -28,5 +28,41 @@
     "price": 250,
     "img": "./producto3.jpg",
     "id": 6
+  },
+  {
+    "title": "El señor de los anillos: La comunidad del anillo",
+    "price": 150,
+    "img": "./producto1.jpg",
+    "id": 7
+  },
+  {
+    "title": "El señor de los anillos: Las dos torres",
+    "price": 200,
+    "img": "./producto2.jpg",
+    "id": 8
+  },
+  {
+    "title": "El señor de los anillos: El retorno del rey",
+    "price": 250,
+    "img": "./producto3.jpg",
+    "id": 9
+  },
+  {
+    "title": "El señor de los anillos: La comunidad del anillo",
+    "price": 150,
+    "img": "./producto1.jpg",
+    "id": 10
+  },
+  {
+    "title": "El señor de los anillos: Las dos torres",
+    "price": 200,
+    "img": "./producto2.jpg",
+    "id": 11
+  },
+  {
+    "title": "El señor de los anillos: El retorno del rey",
+    "price": 250,
+    "img": "./producto3.jpg",
+    "id": 12
   }
 ]
